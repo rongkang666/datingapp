@@ -1,32 +1,32 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">Dating App</a>
+
+  <div class="container">
+      <a class="navbar-brand" [routerLink]="['/home']">Dating App</a>
  
 
   
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Matches</a>
+    <ul *ngIf="loggedIn()" class="navbar-nav mr-auto">
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['/members']">Matches</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Lists</a>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['/lists']">Lists</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#"> Message</a>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['/messages']"> Message</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" (click)="LoggedOut()"> LogOut</a>
-      </li>
+      
     </ul>
 
-    <div *ngIf="loggedIn()" class="dropdown">
-      <a class="btn btn-secondary">
-        Welcome User
+    <div *ngIf="loggedIn()" class="dropdown" dropdown>
+      <a class="btn btn-secondary dropdown-toggle" dropdownToggle>
+        Welcome {{authService.decodedToken.unique_name}}
       </a>
     
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="#">Edit Profile</a>
+      <div class="dropdown-menu mt-3" *dropdownMenu>
+        <a class="dropdown-item" [routerLink]="['/member/edit']" routerLinkActive="router-link-active" >Edit Profile</a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#">LogOut</a>
+        <a class="dropdown-item" (click)="LoggedOut()">LogOut</a>
       </div>
     </div>
 
@@ -38,5 +38,11 @@
 
       <button [disabled]= "!loginForm.valid" class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
     </form>
+  
+
+
+  </div>
+
+
   
 </nav>
