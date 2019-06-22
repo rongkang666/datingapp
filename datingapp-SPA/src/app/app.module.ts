@@ -26,6 +26,8 @@ import { MemberDetailResolver } from 'src/_resolvers/member-detail.resolver';
 import { MemberEditResolver } from 'src/_resolvers/member-edit.resolver';
 import { MemberEditComponent } from './member-edit/member-edit.component';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
+import { PhotoEditorComponent } from './photo-editor/photo-editor.component';
+import { FileUploadModule } from 'ng2-file-upload';
 
 
 export function tokenGetter() {
@@ -44,7 +46,8 @@ export function tokenGetter() {
       MessagesComponent,
       MemberCardComponent,
       MemberDetailComponent,
-      MemberEditComponent
+      MemberEditComponent,
+      PhotoEditorComponent
    ],
    imports: [
       BrowserModule,
@@ -54,6 +57,7 @@ export function tokenGetter() {
       BsDropdownModule.forRoot(),
       TabsModule.forRoot(),
       NgxGalleryModule,
+      FileUploadModule,
       JwtModule.forRoot({
          config: {
            // tslint:disable-next-line:object-literal-shorthand
@@ -76,3 +80,22 @@ export function tokenGetter() {
    ]
 })
 export class AppModule { }
+
+
+// imports: [
+//    BrowserModule,
+//    AppRoutingModule,
+//    HttpClientModule,
+//    FormsModule,
+//    BsDropdownModule.forRoot(),
+//    TabsModule.forRoot(),
+//    NgxGalleryModule,
+//    JwtModule.forRoot({
+//       config: {
+//         // tslint:disable-next-line:object-literal-shorthand
+//         tokenGetter: tokenGetter,
+//         whitelistedDomains: ['localhost:5000'],
+//         blacklistedRoutes: ['localhost:5000/api/auth']
+//       }
+//     })
+//    ],
