@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using datingapp.API.Data;
 using datingapp.API.Dtos;
+using datingapp.API.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -47,6 +48,28 @@ namespace datingapp.API.Controllers
             return Ok(userForReturn);
         }
 
+        [HttpGet("{id}/getLikees")]
+        public async Task<IActionResult> getLikees(int id) {
+
+            var likees = await _repo.GetLikees(id);
+
+            var userForReturn = _mapper.Map<IEnumerable<UserForListDto>>(likees); 
+
+            return Ok(userForReturn);
+
+        }
+         [HttpGet("{id}/getLikers")]
+        public async Task<IActionResult> getLikers(int id) {
+
+            var likers = await _repo.GetLikers(id);
+
+            var userForReturn = _mapper.Map<IEnumerable<UserForListDto>>(likers); 
+
+            return Ok(userForReturn);
+
+        }
+
+
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, UserForUpdateDto userForUpdateDto) {
             
@@ -66,7 +89,39 @@ namespace datingapp.API.Controllers
             throw new Exception($"Updating user {id} failed");
         }
 
+        [HttpPost("{id}/like/{recipientId}")]
 
+        public async Task<IActionResult> LikeUser(int id, int recipientId) {
+              // verify if the user trying to update is the user of the id itself
+            if(id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) {
+                return Unauthorized();
+            }
+
+            var like = await _repo.GetLike(id, recipientId);
+
+            if(like != null) {
+                return BadRequest("You have lready liked this user");
+            }
+
+            if(await _repo.GetUser(recipientId) == null) {
+                return NotFound();
+            }
+
+            like = new Like {
+                LikerId = id,
+                LikeeId = recipientId
+            };
+
+            _repo.add<Like>(like);
+            
+            if (await _repo.SaveAll()) {
+                return Ok();
+            }
+
+            return BadRequest("Cannot like user");
+
+
+        }
 
         
     }
