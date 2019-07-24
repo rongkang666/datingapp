@@ -1,0 +1,19 @@
+.chat {
+    list-style-type: none;
+}
+
+.chat li{
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid grey;
+}
+
+.rounded-circle {
+    height: 50px;
+    width: 50px;
+}
+
+.card-body {
+    overflow-y: scroll;
+    height: 400px;
+}

@@ -29,6 +29,10 @@ import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { PhotoEditorComponent } from './photo-editor/photo-editor.component';
 import { FileUploadModule } from 'ng2-file-upload';
 
+import {TimeAgoPipe} from 'time-ago-pipe';
+import { MessagesResolver } from 'src/_resolvers/messages.resolver';
+import { MemberMessagesComponent } from './member-messages/member-messages.component';
+
 
 export function tokenGetter() {
    return localStorage.getItem('token');
@@ -47,7 +51,9 @@ export function tokenGetter() {
       MemberCardComponent,
       MemberDetailComponent,
       MemberEditComponent,
-      PhotoEditorComponent
+      PhotoEditorComponent,
+      TimeAgoPipe,
+      MemberMessagesComponent
    ],
    imports: [
       BrowserModule,
@@ -73,7 +79,8 @@ export function tokenGetter() {
       AuthGuard,
       PreventUnsavedChanges,
       MemberDetailResolver,
-      MemberEditResolver
+      MemberEditResolver,
+      MessagesResolver
    ],
    bootstrap: [
       AppComponent
@@ -90,6 +97,7 @@ export class AppModule { }
 //    BsDropdownModule.forRoot(),
 //    TabsModule.forRoot(),
 //    NgxGalleryModule,
+//    FileUploadModule,
 //    JwtModule.forRoot({
 //       config: {
 //         // tslint:disable-next-line:object-literal-shorthand

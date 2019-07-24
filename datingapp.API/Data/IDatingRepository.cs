@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using datingapp.API.Helpers;
 using datingapp.API.Model;
 
 namespace datingapp.API.Data
@@ -24,6 +25,10 @@ namespace datingapp.API.Data
 
          Task<IEnumerable<User>> GetLikees(int id);
          Task<IEnumerable<User>> GetLikers(int id);
+
+         Task<Message> GetMessage(int id);
+         Task<IEnumerable<Message>> GetMessagesForUser(MessageParams messageParams);
+         Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId);
          
 
     }
