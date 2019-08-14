@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace datingapp.API.Controllers
 {
-    [ServiceFilter(typeof(LogUserActivity))]
+
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
@@ -22,15 +22,18 @@ namespace datingapp.API.Controllers
     {
         private readonly IDatingRepository _repo;
         private readonly IMapper _mapper;
+        private readonly DataContext _context;
 
-        public UsersController(IDatingRepository repo, IMapper mapper)
+        public UsersController(IDatingRepository repo, IMapper mapper, DataContext context)
         {
+            _context = context;
             _repo = repo;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers() 
+        [ServiceFilter(typeof(LogUserActivity))]
+        public async Task<IActionResult> GetUsers()
         {
             var users = await _repo.GetUsers();
 
@@ -41,6 +44,7 @@ namespace datingapp.API.Controllers
 
 
         [HttpGet("{id}", Name = "GetUser")]
+        [ServiceFilter(typeof(LogUserActivity))]
         public async Task<IActionResult> GetUser(int id)
         {
             var user = await _repo.GetUser(id);
@@ -50,22 +54,50 @@ namespace datingapp.API.Controllers
             return Ok(userForReturn);
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+
+            // verify if the user trying to update is the user of the id itself
+            if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
+            var user = await _repo.GetUser(id);
+
+            _repo.delete<User>(user);
+
+            _context.SaveChanges();
+
+            return NoContent();
+
+
+        }
+
+
+
+
+
         [HttpGet("{id}/getLikees")]
-        public async Task<IActionResult> getLikees(int id) {
+        [ServiceFilter(typeof(LogUserActivity))]
+        public async Task<IActionResult> getLikees(int id)
+        {
 
             var likees = await _repo.GetLikees(id);
 
-            var userForReturn = _mapper.Map<IEnumerable<UserForListDto>>(likees); 
+            var userForReturn = _mapper.Map<IEnumerable<UserForListDto>>(likees);
 
             return Ok(userForReturn);
 
         }
-         [HttpGet("{id}/getLikers")]
-        public async Task<IActionResult> getLikers(int id) {
+        [HttpGet("{id}/getLikers")]
+        [ServiceFilter(typeof(LogUserActivity))]
+        public async Task<IActionResult> getLikers(int id)
+        {
 
             var likers = await _repo.GetLikers(id);
 
-            var userForReturn = _mapper.Map<IEnumerable<UserForListDto>>(likers); 
+            var userForReturn = _mapper.Map<IEnumerable<UserForListDto>>(likers);
 
             return Ok(userForReturn);
 
@@ -73,10 +105,13 @@ namespace datingapp.API.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, UserForUpdateDto userForUpdateDto) {
-            
+        [ServiceFilter(typeof(LogUserActivity))]
+        public async Task<IActionResult> UpdateUser(int id, UserForUpdateDto userForUpdateDto)
+        {
+
             // verify if the user trying to update is the user of the id itself
-            if(id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) {
+            if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
                 return Unauthorized();
             }
 
@@ -84,7 +119,8 @@ namespace datingapp.API.Controllers
 
             _mapper.Map(userForUpdateDto, userFromRepo);
 
-            if(await _repo.SaveAll()) {
+            if (await _repo.SaveAll())
+            {
                 return NoContent();
             }
 
@@ -92,31 +128,38 @@ namespace datingapp.API.Controllers
         }
 
         [HttpPost("{id}/like/{recipientId}")]
+        [ServiceFilter(typeof(LogUserActivity))]
 
-        public async Task<IActionResult> LikeUser(int id, int recipientId) {
-              // verify if the user trying to update is the user of the id itself
-            if(id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) {
+        public async Task<IActionResult> LikeUser(int id, int recipientId)
+        {
+            // verify if the user trying to update is the user of the id itself
+            if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
                 return Unauthorized();
             }
 
             var like = await _repo.GetLike(id, recipientId);
 
-            if(like != null) {
+            if (like != null)
+            {
                 return BadRequest("You have lready liked this user");
             }
 
-            if(await _repo.GetUser(recipientId) == null) {
+            if (await _repo.GetUser(recipientId) == null)
+            {
                 return NotFound();
             }
 
-            like = new Like {
+            like = new Like
+            {
                 LikerId = id,
                 LikeeId = recipientId
             };
 
             _repo.add<Like>(like);
-            
-            if (await _repo.SaveAll()) {
+
+            if (await _repo.SaveAll())
+            {
                 return Ok();
             }
 
@@ -125,6 +168,6 @@ namespace datingapp.API.Controllers
 
         }
 
-        
+
     }
 }

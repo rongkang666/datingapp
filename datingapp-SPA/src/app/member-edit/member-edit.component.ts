@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { User } from '../_models/User';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertifyService } from '../_services/alertify.service';
 import { NgForm } from '@angular/forms';
 import { UserService } from '../_services/user.service';
@@ -27,7 +27,7 @@ export class MemberEditComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private aletify: AlertifyService, private userService: UserService,
     // tslint:disable-next-line:align
-    private authService: AuthService) { }
+    private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
     this.route.data.subscribe(data => {
@@ -52,6 +52,20 @@ export class MemberEditComponent implements OnInit {
 
   updateMemberPhoto(photoUrl) {
     this.user.photoUrl = photoUrl;
+  }
+
+  deleteUser(id: number) {
+    this.userService.deleteUser(id).subscribe(() => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+
+      this.authService.decodedToken = null;
+      this.authService.currentUser = null;
+
+      this.router.navigate(['']);
+    }, error => {
+      this.aletify.error(error);
+    });
   }
 
 }

@@ -25,6 +25,7 @@ namespace datingapp.API.Data
         public void delete<T>(T entity) where T : class
         {
             _context.Remove(entity);
+            
         }
 
         public async Task<Like> GetLike(int userId, int recipientId)

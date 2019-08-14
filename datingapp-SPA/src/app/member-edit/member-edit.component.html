@@ -36,9 +36,12 @@
             <button class="btn btn-success btn-block" form="edit_form" [disabled]="!editForm.dirty">
               Save
             </button>
-            
           </div>
+          <button class="btn btn-danger btn-block mt-1" (click)="deleteUser(user.id)">
+            Delete
+          </button>
         </div>
+        
       </div>
     </div>
 
