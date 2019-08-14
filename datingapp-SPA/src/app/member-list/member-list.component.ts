@@ -3,6 +3,7 @@ import { User } from '../_models/User';
 import { HttpClient } from 'selenium-webdriver/http';
 import { AlertifyService } from '../_services/alertify.service';
 import { UserService } from '../_services/user.service';
+import { AuthService } from '../_services/auth.service';
 
 @Component({
   selector: 'app-member-list',
@@ -12,8 +13,9 @@ import { UserService } from '../_services/user.service';
 export class MemberListComponent implements OnInit {
 
   users: User[];
+  currentUserId: number = this.authService.decodedToken.nameid;
 
-  constructor(private userService: UserService, private aletify: AlertifyService) { }
+  constructor(private userService: UserService, private aletify: AlertifyService, private authService: AuthService) { }
 
   ngOnInit() {
     this.loadUsers();

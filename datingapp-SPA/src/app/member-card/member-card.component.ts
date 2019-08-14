@@ -13,10 +13,12 @@ export class MemberCardComponent implements OnInit {
 
   @Input() user: User;
 
+  currentUserId: number = this.authService.decodedToken.nameid;
+
   constructor(private authService: AuthService, private userService: UserService, private alertify: AlertifyService) { }
 
   ngOnInit() {
-  }
+ }
 
   sendLike(id: number) {
     this.userService.sendLike(this.authService.decodedToken.nameid, id).subscribe(data => {
