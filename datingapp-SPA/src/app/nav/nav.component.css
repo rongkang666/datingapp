@@ -7,3 +7,39 @@ img {
     border: 2px solid white ;
     display: inline;
 }
+
+#mobile-menu {
+    display: none;
+}
+
+#web-menu {
+    visibility: visible;
+}
+
+
+
+@media only screen and (max-width: 500px) {
+    #mobile-menu {
+        display: block;
+    }
+
+    #mobile-menu>li {
+        
+        border-bottom: 1px solid orange;
+        background-color: rgba(255, 204, 153, 0.8);
+    }
+
+    #mobile-menu>li>a {
+        margin: 1px 1px 1px 15px;
+    }
+
+    #mobile-menu>li:hover {
+        background-color:  rgba(255, 204, 153, 1);
+    }
+
+
+
+    #web-menu {
+        display: none;
+    }
+  }

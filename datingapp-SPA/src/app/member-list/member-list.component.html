@@ -3,12 +3,31 @@
 
 <div class="container mt-5">
   <div class="row">
-    <label>Gender filter</label>
-      <select [(ngModel)]="genderFilter">
-          <option>All</option>
-          <option>Male</option>
-          <option>Female</option>
-      </select>
+    
+    <div class="col-sm-4 filter-field">
+        <label for="gender" class="mr-2">Gender filter:</label>
+        <select [(ngModel)]="genderFilter">
+            <option>All</option>
+            <option>Male</option>
+            <option>Female</option>
+        </select>
+    </div>
+
+    <div class="col-sm-8 filter-field">
+      
+
+        <label for="age" class="mr-2">Age filter:</label>
+        <span>From</span>
+        <input type="number" min="18" max="40" class="age-field" [(ngModel)]="minAge">
+        <span>to</span> 
+            <input type="number" min="41" max="99" [(ngModel)]="maxAge">
+            
+            <button type="submit" class="btn btn-primary ml-2 age-btn" (click)="applyAgeFilter()">Apply</button>
+            
+        
+    </div>
+  
+
 
   </div>
 
@@ -24,7 +43,7 @@
           </div>
       </ng-container>  
       <ng-container *ngIf="genderFilter == 'All'">
-          <div *ngFor="let user of users | paginate: { itemsPerPage: 6, currentPage: p}" class="col-lg-2 col-md-3 col-sm-6">
+          <div *ngFor="let user of allUsers | paginate: { itemsPerPage: 6, currentPage: p}" class="col-lg-2 col-md-3 col-sm-6">
               <app-member-card [user]="user"></app-member-card>
           </div>
       </ng-container>  

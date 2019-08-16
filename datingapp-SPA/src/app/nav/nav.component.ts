@@ -12,6 +12,11 @@ export class NavComponent implements OnInit {
 
   model: any = {};
   photoUrl: string;
+  public innerWidth: any;
+
+
+
+
 
   constructor(public authService: AuthService, private alertify: AlertifyService, private router: Router) { }
 
@@ -51,6 +56,5 @@ export class NavComponent implements OnInit {
     this.router.navigate(['/home']);
 
   }
-
 
 }

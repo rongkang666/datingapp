@@ -1,9 +1,11 @@
-label select {
-    display: inline-block;
-    vertical-align: middle;
-}
+
 
 
 .match-pagination {
     text-align: center;
 }
+
+.age-btn {
+    transform: translateY(-2px);
+}
+

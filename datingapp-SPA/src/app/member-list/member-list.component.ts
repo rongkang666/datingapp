@@ -15,6 +15,9 @@ export class MemberListComponent implements OnInit {
   users: User[];
   males: User[] = [];
   females: User[] = [];
+  allUsers: User[] = [];
+  minAge = 18;
+  maxAge = 41;
 
   currentUserId: number = this.authService.decodedToken.nameid;
   p = 1;
@@ -37,14 +40,35 @@ export class MemberListComponent implements OnInit {
 
      // tslint:disable-next-line:prefer-for-of
      for (let i = 0; i < this.users.length; i++) {
-        if (this.users[i].gender === 'male') {
+        if (this.users[i].gender === 'male' && this.users[i].age >= this.minAge && this.users[i].age <= this.maxAge) {
           this.males.push(this.users[i]);
         }
-        if (this.users[i].gender === 'female') {
+        if (this.users[i].gender === 'female' && this.users[i].age >= this.minAge && this.users[i].age <= this.maxAge) {
           this.females.push(this.users[i]);
+        }
+        if (this.users[i].age >= this.minAge && this.users[i].age <= this.maxAge) {
+          this.allUsers.push(this.users[i]);
         }
     }
    });
+  }
+
+  applyAgeFilter() {
+    this.males.length = 0;
+    this.females.length = 0;
+    this.allUsers.length = 0;
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < this.users.length; i++) {
+      if (this.users[i].gender === 'male' && this.users[i].age >= this.minAge && this.users[i].age <= this.maxAge) {
+        this.males.push(this.users[i]);
+      }
+      if (this.users[i].gender === 'female' && this.users[i].age >= this.minAge && this.users[i].age <= this.maxAge) {
+        this.females.push(this.users[i]);
+      }
+      if (this.users[i].age >= this.minAge && this.users[i].age <= this.maxAge) {
+        this.allUsers.push(this.users[i]);
+      }
+  }
   }
 
 }
