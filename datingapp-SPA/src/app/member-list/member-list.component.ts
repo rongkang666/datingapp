@@ -13,7 +13,13 @@ import { AuthService } from '../_services/auth.service';
 export class MemberListComponent implements OnInit {
 
   users: User[];
+  males: User[] = [];
+  females: User[] = [];
+
   currentUserId: number = this.authService.decodedToken.nameid;
+  p = 1;
+
+  genderFilter = 'All';
 
   constructor(private userService: UserService, private aletify: AlertifyService, private authService: AuthService) { }
 
@@ -24,9 +30,20 @@ export class MemberListComponent implements OnInit {
   loadUsers() {
    this.userService.getUsers().subscribe((users: User[]) => {
     this.users = users;
-    // console.log(users.length);
    }, error => {
      this.aletify.error('Cannot get users list');
+   }, () => {
+     console.log(this.users.length);
+
+     // tslint:disable-next-line:prefer-for-of
+     for (let i = 0; i < this.users.length; i++) {
+        if (this.users[i].gender === 'male') {
+          this.males.push(this.users[i]);
+        }
+        if (this.users[i].gender === 'female') {
+          this.females.push(this.users[i]);
+        }
+    }
    });
   }
 
