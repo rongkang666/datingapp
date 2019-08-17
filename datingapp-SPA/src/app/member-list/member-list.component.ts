@@ -36,7 +36,7 @@ export class MemberListComponent implements OnInit {
    }, error => {
      this.aletify.error('Cannot get users list');
    }, () => {
-     console.log(this.users.length);
+    // console.log(this.users.length);
 
      // tslint:disable-next-line:prefer-for-of
      for (let i = 0; i < this.users.length; i++) {

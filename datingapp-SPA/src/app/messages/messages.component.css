@@ -9,3 +9,17 @@ table {
 td {
     vertical-align: middle;
 }
+
+#no-message {
+    width: 100%;
+    transform: translateY(100px);
+    opacity: 0.2;
+}
+
+#no-message-info {
+    opacity: 0.1;
+    transform: scale(2,2) translateY(30px);
+    width: 100%;
+    text-align: center;
+    
+}

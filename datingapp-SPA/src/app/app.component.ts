@@ -12,7 +12,11 @@ export class AppComponent implements OnInit {
 
   jwtHelper = new JwtHelperService();
 
-  constructor(private authService: AuthService) {}
+  currentYear: number;
+
+  constructor(private authService: AuthService) {
+    this.currentYear = new Date().getFullYear();
+  }
 
   ngOnInit() {
     const token = localStorage.getItem('token');

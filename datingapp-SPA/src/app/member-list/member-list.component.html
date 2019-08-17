@@ -5,7 +5,7 @@
   <div class="row">
     
     <div class="col-sm-4 filter-field">
-        <label for="gender" class="mr-2">Gender filter:</label>
+        <label for="gender" class="mr-2"><strong class="text-info">Gender filter:</strong></label>
         <select [(ngModel)]="genderFilter">
             <option>All</option>
             <option>Male</option>
@@ -16,7 +16,7 @@
     <div class="col-sm-8 filter-field">
       
 
-        <label for="age" class="mr-2">Age filter:</label>
+        <label for="age" class="mr-2"><strong class="text-info">Age filter:</strong></label>
         <span>From</span>
         <input type="number" min="18" max="40" class="age-field" [(ngModel)]="minAge">
         <span>to</span> 
@@ -48,6 +48,16 @@
           </div>
       </ng-container>  
 
+      
+
+        <h2 class="text-center" id="no-found" *ngIf="females.length == 0 || males.length == 0 || allUsers.length == 0">
+          
+          No results found</h2>
+
+      
+
   </div>
-  <pagination-controls (pageChange)="p = $event" class="match-pagination"></pagination-controls>
+  <pagination-controls (pageChange)="p = $event" class="match-pagination"
+  *ngIf="!(females.length == 0 || males.length == 0 || allUsers.length == 0)"
+  ></pagination-controls>
 </div>
